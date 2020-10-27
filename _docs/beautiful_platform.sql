@@ -11,7 +11,7 @@
  Target Server Version : 80015
  File Encoding         : 65001
 
- Date: 27/10/2020 17:18:13
+ Date: 27/10/2020 17:53:14
 */
 
 SET NAMES utf8mb4;
@@ -22,22 +22,33 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `check_point`;
 CREATE TABLE `check_point` (
+  `id` int(20) NOT NULL AUTO_INCREMENT COMMENT '用例检查点id',
+  `case_id` int(20) NOT NULL COMMENT '用例id',
+  `check_point_id` int(20) NOT NULL COMMENT '检查类型id',
+  `except_format` varchar(255) NOT NULL COMMENT '比较值信息',
+  `result` int(20) NOT NULL COMMENT '结果 1成功 2失败 2跳过',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `version` int(11) DEFAULT NULL COMMENT '乐观锁',
+  `deleted` int(1) NOT NULL COMMENT '0为正常 1为删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `case_id` (`case_id`),
+  KEY `check_point_id` (`check_point_id`),
+  CONSTRAINT `check_point_ibfk_1` FOREIGN KEY (`case_id`) REFERENCES `p_trunk_case` (`id`),
+  CONSTRAINT `check_point_ibfk_2` FOREIGN KEY (`check_point_id`) REFERENCES `check_point_template` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用例检查点关联';
+
+-- ----------------------------
+-- Table structure for check_point_template
+-- ----------------------------
+DROP TABLE IF EXISTS `check_point_template`;
+CREATE TABLE `check_point_template` (
   `id` int(20) NOT NULL AUTO_INCREMENT COMMENT '检查点id',
   `check_type` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '检查类型',
   `deleted` int(1) NOT NULL COMMENT '是否被删除',
   `desc` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of check_point
--- ----------------------------
-BEGIN;
-INSERT INTO `check_point` VALUES (1, 'CONTAINS', 0, '包含某个字段');
-INSERT INTO `check_point` VALUES (2, 'GT', 0, '大于');
-INSERT INTO `check_point` VALUES (3, 'LT', 0, '小于');
-INSERT INTO `check_point` VALUES (5, 'EQUAL', 0, '等于');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for p_trunk_case
@@ -60,6 +71,7 @@ CREATE TABLE `p_trunk_case` (
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `version` int(11) DEFAULT NULL COMMENT '乐观锁',
   `deleted` int(1) NOT NULL COMMENT '0为正常 1为删除',
+  `request_param` text CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '请求参数',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `case_suite_id` (`case_suite_id`),
   CONSTRAINT `p_trunk_case_ibfk_1` FOREIGN KEY (`case_suite_id`) REFERENCES `p_trunk_case_suite` (`id`)
@@ -69,7 +81,7 @@ CREATE TABLE `p_trunk_case` (
 -- Records of p_trunk_case
 -- ----------------------------
 BEGIN;
-INSERT INTO `p_trunk_case` VALUES (1, 1, 'POST', 'http://www.baidu.com/s', '1', '1', 0, 0, 0, 0, 0, 342, '2020-10-27 17:12:13', '2020-10-27 17:12:30', 0, 0);
+INSERT INTO `p_trunk_case` VALUES (1, 1, 'POST', 'http://www.baidu.com/s', '1', '1', 0, 0, 0, 0, 0, 342, '2020-10-27 17:12:13', '2020-10-27 17:12:30', 0, 0, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -121,7 +133,7 @@ CREATE TABLE `schdule_application` (
 -- Records of schdule_application
 -- ----------------------------
 BEGIN;
-INSERT INTO `schdule_application` VALUES (15543, '车辆中心', '蔡文姬1', '2020-10-27 17:07:36', '2020-10-27 17:07:38', 0);
+INSERT INTO `schdule_application` VALUES (15543, '车辆中心', '蔡文姬', '2020-10-27 17:07:36', '2020-10-27 17:07:38', 0);
 COMMIT;
 
 -- ----------------------------
@@ -174,7 +186,7 @@ CREATE TABLE `sys_user` (
 -- Records of sys_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user` VALUES (1, 'hubo', '123456', 'adnbcs', '胡博', 'hubo96194xxxxx@163.com', '19090909090', 0, 1, 1, '2020-10-27 17:04:47', '2020-10-27 17:05:47', 00000000000);
+INSERT INTO `sys_user` VALUES (1, 'hubo', '123456', 'adnbcs', '胡博', 'hubo961941609@163.com', '17521190927', 0, 1, 1, '2020-10-27 17:04:47', '2020-10-27 17:05:47', 00000000000);
 COMMIT;
 
 -- ----------------------------
