@@ -121,7 +121,7 @@ CREATE TABLE `schdule_application` (
 -- Records of schdule_application
 -- ----------------------------
 BEGIN;
-INSERT INTO `schdule_application` VALUES (15543, '车辆中心', '蔡文姬', '2020-10-27 17:07:36', '2020-10-27 17:07:38', 0);
+INSERT INTO `schdule_application` VALUES (15543, '车辆中心', '蔡文姬1', '2020-10-27 17:07:36', '2020-10-27 17:07:38', 0);
 COMMIT;
 
 -- ----------------------------
