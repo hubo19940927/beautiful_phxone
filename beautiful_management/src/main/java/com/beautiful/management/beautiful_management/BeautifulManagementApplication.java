@@ -2,7 +2,7 @@ package com.beautiful.management.beautiful_management;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-//update 腾讯云 1121
+//update 腾讯云 1118
 @SpringBootApplication
 public class BeautifulManagementApplication {
 
